@@ -86,11 +86,10 @@ Your character:
             })
           });
           if (!response.ok) throw new Error('Voice error ' + response.status);
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-          const audio = new Audio(url);
+          const data = await response.json();
+          const audio = new Audio('data:audio/mpeg;base64,' + data.audio);
           audioRef.current = audio;
-          audio.onended = () => { setIsSpeaking(false); setStatus("Exiled to the digital isle"); URL.revokeObjectURL(url); };
+          audio.onended = () => { setIsSpeaking(false); setStatus("Exiled to the digital isle"); };
           audio.onerror = () => { setIsSpeaking(false); setStatus("Exiled to the digital isle"); };
           await audio.play();
         } catch (err) {
